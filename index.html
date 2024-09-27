@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculate Exact Age</title>
+  </head>
+  <body>
+    <h1>Enter your birth date:</h1>
+
+    <!-- Input field to select a birth date -->
+    <input type="date" id="birthdate" />
+
+    <!-- Button to calculate age -->
+    <button>Calculate Age</button>
+
+    <!-- Display the result -->
+    <p id="ageDisplay"></p>
+
+    <script>
+      // Function to calculate age in years, months, and days
+      function calculateAge(birthdate) {
+        let today = new Date();
+        let birthDate = new Date(birthdate);
+
+        let years = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        let days = today.getDate() - birthDate.getDate();
+
+        // Adjust if the current month/day hasn't been reached yet
+        if (days < 0) {
+          months--;
+          let previousMonth = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            0
+          );
+          days += previousMonth.getDate();
+        }
+
+        if (months < 0) {
+          years--;
+          months = months + 12;
+        }
+
+        return { years, months, days };
+      }
+
+      // Add event listener to the button
+      let button = document.querySelector("button");
+      button.addEventListener("click", () => {
+        let birthdate = document.querySelector("#birthdate").value;
+
+        // Only calculate if a birthdate is selected
+        if (birthdate) {
+          let age = calculateAge(birthdate);
+
+          // Display the age in the desired format
+          document.querySelector(
+            "#ageDisplay"
+          ).innerHTML = `You are ${age.years} years, ${age.months} months, and ${age.days} days old.`;
+
+          // Optional: Print it to the console too
+          console.log(
+            `You are ${age.years} years, ${age.months} months, and ${age.days} days old.`
+          );
+        } else {
+          document.querySelector("#ageDisplay").innerHTML =
+            "Please select a birth date!";
+        }
+      });
+    </script>
+  </body>
+</html>
